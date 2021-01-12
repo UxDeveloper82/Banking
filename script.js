@@ -88,21 +88,126 @@ document.querySelector('.nav__links').addEventListener
     }
 });
 
-const h1 = document.querySelector('h1');
+// Tabbed component
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
 
-//Going downward: child
-console.log(h1.querySelectorAll('.highlight'));
-console.log(h1.childNodes);
-console.log(h1.children);
-h1.firstElementChild.style.color = 'white';
-h1.lastElementChild.style.color = 'orangered';
+tabsContainer.addEventListener('click', function(e) {
+  const clicked = e.target.closest('.operations__tab');
+ 
+  // Guard clause
+  if(!clicked) return;
+  // if(clicked) {
+  //   clicked.classList.add('operations__tab--active');    
+  // }
+  // Active tab
+  tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+  tabsContent.forEach(t =>t.classList.remove('operations__content--active'));
 
-//Going upwards: parents
-console.log(h1.parentNode);
-console.log(h1.parentElement);
+  //Active content area
+  document.querySelector(`.operations__content--${clicked.dataset.tab}`)
+  .classList.add('operations__content--active');
+});
 
-h1.closest('.header').style.background = 'var(--gradient-secondary)';
-h1.closest('h1').style.background = 'var(--gradient-primary)';
+//Menu fade animation
+const nav = document.querySelector('.nav');
+
+const handleHover = function(e ) {
+  console.log(this, e.currentTarget);
+
+  if(e.target.classList.contains('nav__link')) {
+    const link = e.target;
+    const siblings = link.closest('.nav')
+    .querySelectorAll('.nav__link');
+    const logo = link.closest('.nav').querySelector('img');
+
+    siblings.forEach(el => {
+      if(el !== link) el.style.opacity = this;
+    });
+    logo.style.opacity = this;
+  }
+
+}
+//Passing 
+nav.addEventListener('mouseover', handleHover.bind(0.5));
+
+//Menu fade animation
+nav.addEventListener('mouseout', handleHover.bind(1));
+
+// const obsCallback = function (entries, observe) {
+//   entries.forEach(entry => {
+//     console.log(entry);
+//   })
+// }
+const header = document.querySelector('.header');
+const navHeight = nav.getBoundingClientRect().height;
+console.log(navHeight);
+
+const stickyNav = function (entries) {
+  const [entry] = entries;
+    console.log(entry);
+
+   if(!entry.isIntersecting) nav.classList.add
+   ('sticky');
+   else nav.classList.remove('sticky');
+};
+
+const headerObserver = new IntersectionObserver 
+( stickyNav, {
+  root: null,
+  threshold: 0,
+  rootMargin: `-${navHeight}px`,
+});
+ 
+headerObserver.observe(header);
+
+
+
+
+
+// //Sticky navigation
+// const initialCoords = section1.getBoundingClientRect();
+// console.log(initialCoords);
+
+// window.addEventListener('scroll',  function() {
+//    console.log(window.scrollY);
+
+//    if(window.scrollY > initialCoords.top) nav
+//    .classList.add('sticky') 
+//    else nav.classList.remove('sticky');
+
+// });
+
+
+// const h1 = document.querySelector('h1');
+
+// //Going downward: child
+// console.log(h1.querySelectorAll('.highlight'));
+// console.log(h1.childNodes);
+// console.log(h1.children);
+// h1.firstElementChild.style.color = 'white';
+// h1.lastElementChild.style.color = 'orangered';
+
+// //Going upwards: parents
+// console.log(h1.parentNode);
+// console.log(h1.parentElement);
+
+// h1.closest('.header').style.background = 'var(--gradient-secondary)';
+// h1.closest('h1').style.background = 'var(--gradient-primary)';
+
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextElementSibling);
+
+// console.log(h1.previousElementSibling);
+// console.log(h1.nextSibling);
+
+// console.log(h1.parentElement.children);
+
+// [...h1.parentElement.children].forEach(function(el){
+//    if(el !== h1) el.style.transform = 'scale(0.5)';
+// });
 
 
 
@@ -115,27 +220,27 @@ h1.closest('h1').style.background = 'var(--gradient-primary)';
 ///////////////////////////
 //////////////////////////
 
-const header = document.querySelector('.header');
-const message = document.createElement('div');
-message.classList.add('cookie-element');
-//message.textcontext = 'we use cookied for improved functionality and analytics';
+// const header = document.querySelector('.header');
+// const message = document.createElement('div');
+// message.classList.add('cookie-element');
+// //message.textcontext = 'we use cookied for improved functionality and analytics';
 
-message.innerHTML = 'We use cookied for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>'
+// message.innerHTML = 'We use cookied for improved functionality and analytics. <button class="btn btn--close-cookie">Got it!</button>'
 
 //header.prepend(message);
-header.append(message);
+// header.append(message);
 //header.append(message.cloneNode(true));
 //header.before(message);
 //header.after(message);
 //Delete elements
-document.querySelector('.btn--close-cookie')
-.addEventListener('click', function() {
-    //message.remove();
-    message.parentElement.removeChild(message);
-});
+// document.querySelector('.btn--close-cookie')
+// .addEventListener('click', function() {
+//     //message.remove();
+//     message.parentElement.removeChild(message);
+// });
 
-message.style.backgroundColor = '#37383d';
-message.style.width = '120%';
+// message.style.backgroundColor = '#37383d';
+// message.style.width = '120%';
 
 // console.log(message.style.color);
 // console.log(message.style.background);
@@ -226,3 +331,4 @@ document.querySelector('.nav').addEventListener
     this.style.backgroundColor = randomColor();
     console.log('NAV', e.target, e.currentTarget);
 });
+
